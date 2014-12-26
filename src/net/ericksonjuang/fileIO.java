@@ -30,28 +30,6 @@ public class fileIO {
             FileWriter fw = new FileWriter(outputFileName);
             fw.write("Winner: "+ playerString[winner] + " - " + name + "\r\n");
             fw.write("Record Time: " + recordTime + "\r\n");
-            fw.write("Chess manual: \u9ed1\u68cb\uff0d\u25cf\t\u767d\u68cb\uff0d\u25cb\tEmpty\uff0d\u2573\r\n");
-            for(int i = 0; i < 8; i++)
-            {
-                if(i == 0)
-                    fw.write("\u2554\u2550\u2566\u2550\u2566\u2550\u2566\u2550\u2566\u2550\u2566\u2550\u2566\u2550\u2566\u2550\u2557\r\n");
-                for(int j = 0; j < 8; j++)
-                {
-                    if(j == 0)
-                        fw.write("\u2551");
-                    if(board.getBoard()[i][j] == State.Black)
-                        fw.write("\u25cf\u2551");
-                    else if (board.getBoard()[i][j] == State.White)
-                        fw.write("\u25cb\u2551");
-                    else
-                        fw.write("\u2573\u2551");
-                }
-                fw.write("\r\n");
-                if(i == 7)
-                    fw.write("\u255a\u2550\u2569\u2550\u2569\u2550\u2569\u2550\u2569\u2550\u2569\u2550\u2569\u2550\u2569\u2550\u255d");
-                else
-                    fw.write("\u2560\u2550\u256c\u2550\u256c\u2550\u256c\u2550\u256c\u2550\u256c\u2550\u256c\u2550\u256c\u2550\u2563\r\n");
-            }
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();

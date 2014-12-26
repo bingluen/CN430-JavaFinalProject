@@ -93,11 +93,6 @@ public class Board {
         countPoint();
     }
 
-    public List<int[][]> getHistory()
-    {
-        return history;
-    }
-
     public int[] getPlayerHistory()
     {
         return playerHistory;
