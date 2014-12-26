@@ -5,11 +5,13 @@ package net.ericksonjuang;
  */
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
-    private int[][] board = new int [8][8];
-    private List<int[][]> history = new ArrayList<int[][]>();
+    private int[][] board;
+    private List<int[][]> history;
+    private int[] playerHistory;
     private int blackPoint, whitePoint, moveCount;
     private static final Point directions[] = { new Point(0, -1), new Point(0, 1),
             new Point(-1, 0), new Point(1, 0), new Point(-1, -1),
@@ -59,8 +61,12 @@ public class Board {
         {
             changeColor(player, new Point(p.y, p.x));
             countPoint();
+            playerHistory[moveCount] = player;
+            history.add(getCloneBoard(board));
+            moveCount++;
             return true;
         }
+
         return false;
     }
 
@@ -77,11 +83,48 @@ public class Board {
         return false;
     }
 
+    public void undo()
+    {
+        if(moveCount == 0)
+            return;
+        history.remove(moveCount);
+        moveCount--;
+        board = getCloneBoard(history.get(moveCount));
+        countPoint();
+    }
+
+    public List<int[][]> getHistory()
+    {
+        return history;
+    }
+
+    public int[] getPlayerHistory()
+    {
+        return playerHistory;
+    }
+    public boolean isGameOver()
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if(board[i][j] == 2)
+                    return false;
+            }
+        }
+        return true;
+    }
+
     private void init()
     {
         blackPoint = 0;
         whitePoint = 0;
         moveCount = 0;
+
+        playerHistory = new int[64];
+        board = new int [8][8];
+
+        history = new ArrayList<int[][]>();
 
         for(int i = 0; i < 8; i++)
             for(int j = 0; j < 8; j++)
@@ -93,9 +136,8 @@ public class Board {
         board[3][4] = State.Black;
         board[4][3] = State.Black;
 
-        history.add(board);
-
         countPoint();
+        history.add(getCloneBoard(board));
     }
     private void countPoint()
     {
@@ -175,7 +217,6 @@ public class Board {
 
     private void changeColor(int player, Point p)
     {
-        moveCount++;
 
         int notPlayer = (player == State.Black) ? State.White : State.Black;
         int row = p.x;
@@ -242,5 +283,19 @@ public class Board {
             return false;
 
         return true;
+    }
+
+    private int[][] getCloneBoard(int[][] traget)
+    {
+        int[][] clone = new int[8][8];
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                clone[i][j] = traget[i][j];
+            }
+        }
+
+        return clone;
     }
 }
